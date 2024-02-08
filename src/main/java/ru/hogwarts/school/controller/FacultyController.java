@@ -29,8 +29,9 @@ public class FacultyController {
         return facultyService.updateFaculty(id,faculty);
     }
     @DeleteMapping("/{id}")
-    public void removeFaculty(@PathVariable Long id){
+    public ResponseEntity removeFaculty(@PathVariable Long id){
         facultyService.removeFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

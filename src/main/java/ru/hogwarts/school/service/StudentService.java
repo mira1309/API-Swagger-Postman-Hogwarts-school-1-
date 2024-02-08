@@ -9,10 +9,9 @@ public interface StudentService {
 
     Student getStudent (Long id);
 
-    Student updateStudent (Long id, Student student);
+    Student updateStudent ( Student student);
 
     void removeStudent (Long id);
 
-    List<Student> getStudentsByAge(int age);
-
+    List<Student> getWhenAgeBetween(Integer min, Integer max);
 }

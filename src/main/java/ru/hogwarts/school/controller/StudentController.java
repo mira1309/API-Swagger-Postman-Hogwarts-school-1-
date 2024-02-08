@@ -1,10 +1,12 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -26,17 +28,18 @@ public class StudentController {
     }
     @PutMapping("/{id}")
     public  Student updateStudent (@PathVariable Long id, @RequestBody Student student) {
-        return studentService.updateStudent(id, student);
+        return studentService.updateStudent(student);
     }
 
     @DeleteMapping("/{id}")
-    public void removeStudent(@PathVariable Long id){
+    public ResponseEntity removeStudent(@PathVariable Long id){
         studentService.removeStudent(id);
+        return ResponseEntity.ok().build();
     }
 
 
     @GetMapping(params = "age")
-    public Collection<Student> getStudentByAge(@RequestParam Integer age){
-        return studentService.getStudentsByAge(age);
+    public List<Student> getWhenAgeBetween(@RequestParam Integer min, @RequestParam Integer max) {
+        return studentService.getWhenAgeBetween(min, max);
     }
 }

@@ -2,50 +2,46 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.reflect.Array.get;
 
 @Service
 public class FacultyServiceImpl implements FacultyService{
+    private FacultyRepository facultyRepository;
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     private Map<Long, Faculty> facultyMap = new HashMap<>();
 
-    private long counter = 0;
     @Override
     public Faculty addFaculty(Faculty faculty) {
-        long id = counter++;
-        Faculty newFaculty = new Faculty(id, faculty.getName(), faculty.getColor());
-        facultyMap.put(id, newFaculty);
-        return newFaculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty getFaculty(Long id) {
-        return facultyMap.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     @Override
     public Faculty updateFaculty(Long id, Faculty faculty) {
-        Faculty existingFaculty = facultyMap.get(id);
-        existingFaculty.setName(faculty.getName());
-        existingFaculty.setColor(faculty.getColor());
-        return existingFaculty;
+       return facultyRepository.save(faculty);
     }
 
     @Override
     public void removeFaculty(Long id) {
-        facultyMap.remove(id);
+        facultyRepository.deleteById(id);
 
     }
 
     @Override
-    public Collection<Faculty> findByColor(String color) {
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : facultyMap.values()) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+    public List<Faculty> findByColor(String color) {
+        return facultyRepository.findAll().stream().filter(faculty -> faculty.getColor().equals(color)).collect(Collectors.toList());
+
     }
 }
