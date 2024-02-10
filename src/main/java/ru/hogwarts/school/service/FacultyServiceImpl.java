@@ -11,6 +11,8 @@ import static java.lang.reflect.Array.get;
 
 @Service
 public class FacultyServiceImpl implements FacultyService{
+
+
     private FacultyRepository facultyRepository;
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
